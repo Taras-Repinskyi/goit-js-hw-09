@@ -1,11 +1,15 @@
+
+
+
+  import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
 const images = [
   {
     preview:
-      'https://cdn.pixabay.com/photo/2019/05/14/16/43/rchids-4202820__480.jpg',
+      'https://cdn.pixabay.com/photo/2019/05/14/16/43/orchids-4202820__480.jpg',
     original:
-      'https://cdn.pixabay.com/photo/2019/05/14/16/43/rchids-4202820_1280.jpg',
+      'https://cdn.pixabay.com/photo/2019/05/14/16/43/orchids-4202820_1280.jpg',
     description: 'Hokkaido Flower',
   },
   {
@@ -66,49 +70,36 @@ const images = [
   },
 ];
 
+
 function createGalleryMarkup(items) {
-    return items.map(({ preview, original, description }) => {
-        return `
-            <li class="gallery-item">
-                <a class="gallery-link" href="${original}">
-                    <img 
-                        class="gallery-image" 
-                        src="${preview}" 
-                        data-source="${original}" 
-                        alt="${description}" 
-                    />
-                </a>
-            </li>
-        `;
-    }).join('');
+  return items
+    .map(
+      ({ preview, original, description }) => `
+        <li class="gallery-item">
+          <a class="gallery-link" href="${original}">
+            <img 
+              class="gallery-image" 
+              src="${preview}" 
+              data-source="${original}" 
+              alt="${description}" 
+            />
+          </a>
+        </li>
+      `
+    )
+    .join('');
 }
 
 const galleryContainer = document.querySelector('.gallery');
 galleryContainer.innerHTML = createGalleryMarkup(images);
 
-
 const galleryLinks = document.querySelectorAll('.gallery a');
 
-
+// Инициализация галереи SimpleLightbox
 const lightbox = new SimpleLightbox(galleryLinks, {
-  captionsData: 'alt' 
+  captionsData: 'alt',
 });
 
-lightbox.element().addEventListener('show.simplelightbox', function (event) {
-    setTimeout(function() {
-      const captions = document.querySelectorAll('.simple-lightbox-caption');
-      captions.forEach(function(caption) {
-        caption.classList.add('visible');
-      });
-    }, 250); 
-  });
-  
-  
-  galleryContainer.addEventListener('click', function(event) {
-    event.preventDefault();
-    if (event.target.tagName === 'IMG') {
-      lightbox.open(event.target.parentNode);
-    }
-  });
-
+// Открываем галерею
+lightbox.open();
 
